@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # import csv file
-with open('file.csv', 'rb') as f:
+with open('out.csv', 'rb') as f:
     reader = csv.reader(f)
     a = list(reader)
 
