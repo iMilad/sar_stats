@@ -1,6 +1,19 @@
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+
+# Import text file which holds ImageStack's path
+df = pd.read_csv('file.txt', header=None)
+df.columns = ['paths']
+# pandas string method extract takes a regex
+df = df['paths'].str.extract('ASA_\w{3}_(.{6})(\d{4})(\d{2})(\d{2})')
+
+# Columns 2=Year, 3=Month, 4=Day
+df = df.ix[:, 1:4]
+
+# Save it as a csv file
+df.to_csv('out.csv', sep=',', header=False, index=False)
 
 # import csv file
 with open('out.csv', 'rb') as f:
