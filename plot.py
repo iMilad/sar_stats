@@ -23,6 +23,7 @@ with open('out.csv', 'rb') as f:
 months = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
 
+# Convert string to integer
 a = [[int(e) for e in d] for d in a]
 
 years = set(d[0] for d in a)
@@ -31,6 +32,7 @@ minyear, maxyear = min(years), max(years)
 nyears = maxyear - minyear + 1
 monthly_counts = np.zeros((nyears, nmonths))
 
+# Count occurrences of month and add it to monthly_counts list
 for year, month, _ in a:
     monthly_counts[year-minyear, month-1] += 1
 
