@@ -1,3 +1,4 @@
+from matplotlib import cm
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -22,12 +23,15 @@ months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 count = df.groupby(['year', 'month']).count()
 
 # Plot based on Month
-monthPlot = count.unstack(level=0).plot(kind='bar', stacked=True)
+# more colors: http://matplotlib.org/examples/color/colormaps_reference.html
+monthPlot = count.unstack(level=0).plot(kind='bar', stacked=True,
+                                        colormap=cm.spectral)
 monthPlot.set_xticklabels(list(months[:]))
 monthPlot.legend(years)
 
 # Plot based on Year
-yearPlot = count.unstack(level=1).plot(kind='bar', stacked=True)
+yearPlot = count.unstack(level=1).plot(kind='bar', stacked=True,
+                                       colormap=cm.jet)
 yearPlot.legend(months)
 
 plt.show()
