@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def isPlot(fileName):
+def isPlot(fileName, colors=None):
     # Import text file which holds ImageStack's path
     df = pd.read_csv(fileName, header=None)
     df.columns = ['paths']
@@ -26,14 +26,18 @@ def isPlot(fileName):
 
     # Plot based on Month
     # Colors: http://matplotlib.org/examples/color/colormaps_reference.html
+    if colors is not None:
+        cmap = colors
+    else:
+        cmap = cm.spectral
     monthPlot = count.unstack(level=0).plot(kind='bar', stacked=True,
-                                            colormap=cm.spectral)
+                                            colormap=cmap)
     monthPlot.set_xticklabels(list(months[:]))
     monthPlot.legend(years)
 
     # Plot based on Year
     yearPlot = count.unstack(level=1).plot(kind='bar', stacked=True,
-                                           colormap=cm.jet)
+                                           colormap=cmap)
     yearPlot.legend(months)
 
     plt.show()
