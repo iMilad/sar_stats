@@ -3,12 +3,18 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def isPlot(fileName, colors=None):
+def isPlot(fileName, colors=None, regex=None):
     # Import text file which holds ImageStack's path
     df = pd.read_csv(fileName, header=None)
     df.columns = ['paths']
+
     # pandas string method extract takes a regex
-    df = df['paths'].str.extract('ASA_\w{3}_(.{6})(\d{4})(\d{2})(\d{2})')
+    if regex is not None:
+        regPat = regex
+    else:
+        regPat = 'ASA_\w{3}_(.{6})(\d{4})(\d{2})(\d{2})'
+
+    df = df['paths'].str.extract(regPat)
 
     # Columns 2=Year, 3=Month, 4=Day
     df = df.ix[:, 1:4].astype(int)
