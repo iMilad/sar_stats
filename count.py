@@ -2,36 +2,38 @@ from matplotlib import cm
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# Import text file which holds ImageStack's path
-df = pd.read_csv('file.txt', header=None)
-df.columns = ['paths']
-# pandas string method extract takes a regex
-df = df['paths'].str.extract('ASA_\w{3}_(.{6})(\d{4})(\d{2})(\d{2})')
 
-# Columns 2=Year, 3=Month, 4=Day
-df = df.ix[:, 1:4].astype(int)
+def isPlot(fileName):
+    # Import text file which holds ImageStack's path
+    df = pd.read_csv(fileName, header=None)
+    df.columns = ['paths']
+    # pandas string method extract takes a regex
+    df = df['paths'].str.extract('ASA_\w{3}_(.{6})(\d{4})(\d{2})(\d{2})')
 
-# Set a name for columns
-df.columns = ['year', 'month', 'day']
+    # Columns 2=Year, 3=Month, 4=Day
+    df = df.ix[:, 1:4].astype(int)
 
-# Retrieve years from data for Legend and x axis
-years = set(df.year)
-months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    # Set a name for columns
+    df.columns = ['year', 'month', 'day']
 
-# Count occurrences per months and years
-count = df.groupby(['year', 'month']).count()
+    # Retrieve years from data for Legend and x axis
+    years = set(df.year)
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-# Plot based on Month
-# more colors: http://matplotlib.org/examples/color/colormaps_reference.html
-monthPlot = count.unstack(level=0).plot(kind='bar', stacked=True,
-                                        colormap=cm.spectral)
-monthPlot.set_xticklabels(list(months[:]))
-monthPlot.legend(years)
+    # Count occurrences per months and years
+    count = df.groupby(['year', 'month']).count()
 
-# Plot based on Year
-yearPlot = count.unstack(level=1).plot(kind='bar', stacked=True,
-                                       colormap=cm.jet)
-yearPlot.legend(months)
+    # Plot based on Month
+    # Colors: http://matplotlib.org/examples/color/colormaps_reference.html
+    monthPlot = count.unstack(level=0).plot(kind='bar', stacked=True,
+                                            colormap=cm.spectral)
+    monthPlot.set_xticklabels(list(months[:]))
+    monthPlot.legend(years)
 
-plt.show()
+    # Plot based on Year
+    yearPlot = count.unstack(level=1).plot(kind='bar', stacked=True,
+                                           colormap=cm.jet)
+    yearPlot.legend(months)
+
+    plt.show()

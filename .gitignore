@@ -1,3 +1,6 @@
 *.pyc
 *.csv
+*.csv~
+*.txt~
 data/
+figures/
